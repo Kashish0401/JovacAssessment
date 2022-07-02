@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_2_7/cert.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -8,68 +9,78 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final name = TextFormField(
-    keyboardType: TextInputType.name,
-    autofocus: false,
-    //initialValue: '',
-    decoration: InputDecoration(
-      hintText: 'Student Name',
-      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-    ),
-  );
-
-  final email = TextFormField(
-    keyboardType: TextInputType.emailAddress,
-    autofocus: false,
-    //initialValue: 'some password',
-    obscureText: true,
-    decoration: InputDecoration(
-      hintText: 'Email',
-      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-    ),
-  );
-
-  final loginButton = Padding(
-    padding: EdgeInsets.symmetric(vertical: 16.0),
-    child: ElevatedButton(
-        onPressed: () {
-          //Navigator.pushNamed('cert');
-        },
-        child: Text('login'),
-        style: ElevatedButton.styleFrom(primary: Colors.blue[800])),
-  );
-
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  var nameError = null;
+  var emailError = null;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Login to your account'),
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(50),
-          child: Column(
-            children: [
-              Text(
-                'Login',
-                style: TextStyle(fontSize: 30, color: Colors.blue[900]),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              name,
-              SizedBox(
-                height: 20,
-              ),
-              email,
-              SizedBox(
-                height: 20,
-              ),
-              loginButton,
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(title: Text("User Login")),
+      body: Padding(
+        padding: const EdgeInsets.all(40),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
+            Text(
+              "Login",
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                  errorText: nameError,
+                  labelText: "Student Name",
+                  icon: Icon(Icons.person),
+                  hintText: "Enter your name"),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(
+                  errorText: emailError,
+                  hintText: "Enter your email",
+                  labelText: "Email ID",
+                  icon: Icon(Icons.alternate_email_sharp)),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Center(
+                child: SizedBox(
+                    width: 240,
+                    height: 40,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        onPressed: () {
+                          setState(() {
+                            if (nameController.text.isEmpty) {
+                              nameError =
+                                  "Field should not be blank in Name field";
+                            } else if (emailController.text.isEmpty) {
+                              emailError =
+                                  "Field should not be blank in Email field";
+                            } else {
+                              nameError = null;
+                              emailError = null;
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return CertificatePage(
+                                    Name: nameController.text.toString());
+                              }));
+                            }
+                          });
+                        },
+                        child: Text("Login"))))
+          ],
         ),
       ),
     );

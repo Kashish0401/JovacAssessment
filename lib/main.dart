@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:test_2_7/get_started.dart';
 import 'login.dart';
-import 'cert.dart';
-import 'get_started.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,10 +14,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: getStarted(),
-        routes: {
-          'gs': (context) => getStarted(),
-          'login': (context) => LoginPage(),
-          'cert': (context) => CertificatePage()
-        });
+        routes: {'login': (context) => LoginPage()});
   }
 }
